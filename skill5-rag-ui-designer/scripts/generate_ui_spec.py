@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 from __future__ import annotations
 
 import json
@@ -55,6 +55,13 @@ Status: ready
 
 Build a demo-ready RAG workbench for `{scenario}`. The UI must expose retrieval choices, model generation choices, evidence, citations, and system trace instead of hiding the RAG pipeline behind a single chat box.
 
+Default template: `examples/rag_workbench_ui_template/`
+
+- Static backend: use `index.html` with `static/rag-workbench.css` and `static/rag-workbench.js`.
+- Single-file Python backend: use `index.inline.html`.
+- API contract: `GET /api/profile`, `POST /api/query`, `POST /api/rebuild`.
+- Use another template only when the user explicitly requests it.
+
 ## 2. Corpus-Derived Defaults
 
 - File count: {file_count}
@@ -67,11 +74,12 @@ Build a demo-ready RAG workbench for `{scenario}`. The UI must expose retrieval 
 
 ## 3. First-Screen Layout
 
-Use a three-column desktop workbench:
+Use the default template's three-column desktop workbench:
 
-- Left panel: corpus profile, file list, index health.
-- Center panel: query, method selector, model selector, answer, evidence.
-- Right panel: method explanation, trace/debug, evaluation status.
+- Top bar: project identity plus corpus and index status.
+- Left panel: retrieval/model controls, parameters, rebuild action, corpus summary.
+- Center panel: query, grounded answer, citation tags, trace chips, pipeline timeline.
+- Right panel: evidence search, ranked evidence cards, source metadata, score bars, evaluation snapshot.
 
 On mobile, stack query, answer, evidence, corpus profile, then trace.
 
@@ -131,3 +139,4 @@ Show method, BM25 candidate count, vector candidate count, candidate-k, top-k, m
 
 if __name__ == "__main__":
     main()
+

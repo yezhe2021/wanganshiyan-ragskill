@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RAG Workbench</title>
+  <link rel="stylesheet" href="static/rag-workbench.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-logo">R</div>
+        <div>
+          <h1>RAG Workbench</h1>
+          <p>Retrieval · Evidence · Answer</p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span class="status-pill success" id="corpusStatus">Corpus Ready</span>
+        <span class="status-pill success" id="indexStatus">Index Built</span>
+        <span class="project-pill"><span class="avatar">SP</span> Student Project <span class="chevron">⌄</span></span>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <aside class="panel sidebar">
+        <section class="card control-card">
+          <div class="section-title">Retrieval Method <span class="muted">ⓘ</span></div>
+          <div class="segmented" id="methodGroup" role="tablist" aria-label="Retrieval method">
+            <button data-method="bm25">BM25</button>
+            <button data-method="vector">Vector</button>
+            <button data-method="hybrid" class="active">Hybrid</button>
+            <button data-method="rerank">Rerank</button>
+          </div>
+
+          <label class="field-label" for="modelSelect">Model <span class="muted">ⓘ</span></label>
+          <div class="select-wrap">
+            <span class="select-icon">✦</span>
+            <select id="modelSelect">
+              <option value="qwen-plus">DashScope / qwen-plus</option>
+              <option value="qwen-turbo">DashScope / qwen-turbo</option>
+              <option value="qwen-max">DashScope / qwen-max</option>
+              <option value="qwen-long">DashScope / qwen-long</option>
+            </select>
+          </div>
+
+          <div class="slider-block">
+            <div class="slider-head">
+              <label for="topK">Top-K <span class="muted">returned</span></label>
+              <output id="topKValue">5</output>
+            </div>
+            <input id="topK" type="range" min="1" max="20" value="5" />
+            <div class="range-labels"><span>1</span><span>20</span></div>
+          </div>
+
+          <div class="slider-block">
+            <div class="slider-head">
+              <label for="candidateK">Candidate-K <span class="muted">retrieval pool</span></label>
+              <output id="candidateKValue">50</output>
+            </div>
+            <input id="candidateK" type="range" min="10" max="200" step="5" value="50" />
+            <div class="range-labels"><span>10</span><span>200</span></div>
+          </div>
+
+          <label class="switch-row">
+            <span><strong>Show citations</strong><small>Display inline citation tags</small></span>
+            <input id="showCitations" type="checkbox" checked />
+          </label>
+
+          <label class="switch-row">
+            <span><strong>Debug trace</strong><small>Show pipeline details</small></span>
+            <input id="showTrace" type="checkbox" checked />
+          </label>
+
+          <label class="switch-row">
+            <span><strong>DashScope model</strong><small>Disable to use local draft only</small></span>
+            <input id="useModel" type="checkbox" checked />
+          </label>
+
+          <button class="primary full" id="rebuildBtn">↻ Rebuild Index</button>
+        </section>
+
+        <section class="card summary-card">
+          <div class="card-head">
+            <h2>Corpus Summary</h2>
+            <span class="muted" id="profileUpdated">Not loaded</span>
+          </div>
+          <div class="summary-grid">
+            <div><span>Files</span><strong id="fileCount">—</strong><small>PDF / DOCX / MD</small></div>
+            <div><span>Chunks</span><strong id="chunkCount">—</strong><small id="avgChunk">Avg. — tokens</small></div>
+            <div><span>Language</span><strong>EN / ZH</strong><small>Detected</small></div>
+          </div>
+        </section>
+      </aside>
+
+      <section class="main-column">
+        <section class="card query-card">
+          <textarea id="queryInput" placeholder="Ask a question about the uploaded documents…" rows="4"></textarea>
+          <div class="query-actions">
+            <button class="ghost" id="clearBtn">Clear</button>
+            <button class="primary" id="runBtn">▶ Run</button>
+          </div>
+        </section>
+
+        <section class="card answer-card">
+          <div class="answer-head">
+            <div class="answer-title"><span class="spark">✦</span><h2>Grounded Answer</h2></div>
+            <button class="secondary" id="copyBtn">⧉ Copy</button>
+          </div>
+          <article id="answerBox" class="answer-content muted-block">等待查询。请输入问题后点击 Run。</article>
+          <div class="trace-chips" id="traceChips"></div>
+        </section>
+
+        <section class="card timeline-card" id="timelineCard">
+          <div class="card-head">
+            <h2>Pipeline Timeline</h2>
+            <span id="totalLatency">Total — ms</span>
+          </div>
+          <div class="timeline">
+            <div class="step active"><i></i><span>Query Rewrite</span><small id="rewriteMs">—</small></div>
+            <div class="step active"><i></i><span>Retrieve</span><small id="retrieveMs">—</small></div>
+            <div class="step active"><i></i><span>Rerank</span><small id="rerankMs">—</small></div>
+            <div class="step active"><i></i><span>Generate Answer</span><small id="answerMs">—</small></div>
+          </div>
+        </section>
+
+        <details class="card debug-card" id="debugCard">
+          <summary>‹› Debug Trace <span class="muted">details</span></summary>
+          <pre id="debugTrace">{}</pre>
+        </details>
+      </section>
+
+      <aside class="panel evidence-column">
+        <section class="card evidence-card">
+          <div class="card-head">
+            <h2>Evidence <span id="evidenceTitleCount">Top 5</span></h2>
+            <span class="muted" id="evidenceCount">0 results</span>
+          </div>
+          <div class="evidence-search">
+            <input id="evidenceFilter" type="search" placeholder="Search evidence…" />
+            <button class="secondary" aria-label="filter">⌕</button>
+          </div>
+          <div id="evidenceList" class="evidence-list empty-state">等待检索证据。</div>
+        </section>
+
+        <section class="card metrics-card">
+          <div class="card-head">
+            <h2>Evaluation Snapshot</h2>
+            <span class="muted">Last run</span>
+          </div>
+          <div class="metrics-grid">
+            <div><span>Latency</span><strong id="metricLatency">—</strong><small>ms</small></div>
+            <div><span>Recall@5</span><strong id="metricRecall">—</strong><small>optional</small></div>
+            <div><span>Citation Acc.</span><strong id="metricCitation">—</strong><small>optional</small></div>
+          </div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <script src="static/rag-workbench.js"></script>
+</body>
+</html>

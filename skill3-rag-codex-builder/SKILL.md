@@ -1,4 +1,4 @@
----
+﻿---
 name: skill3-rag-codex-builder
 description: Convert RAG requirements and a prompt pack into a Codex-executable engineering task, including Python project structure, technology choices, module tasks, runnable scaffold guidance, UI/API mode, README expectations, commands, and evaluation interfaces while reusing existing local RAG scripts.
 ---
@@ -14,6 +14,7 @@ Turn the requirement spec and prompt pack into a Codex-ready engineering task.
 - `shared/prompt_pack.md`
 - Optional `shared/document_analysis.md`
 - Optional `shared/ui_design.md`
+- Default frontend template: `examples/rag_workbench_ui_template/`
 
 If any required input is missing, route backward to the missing stage.
 
@@ -33,7 +34,7 @@ Use `assets/rag-project-template/scripts/` as the local implementation base. It 
 - `serve_ui.py`: local web UI baseline.
 - `tune_chunking.py`: chunk-size/overlap tuning.
 
-For UI-heavy demos, prefer the integrated pattern in `generated-rag-system/server.py`, which combines corpus profiling, method selection, DashScope model selection, evidence display, and trace metadata.
+For Web interfaces, use `examples/rag_workbench_ui_template/` as the default frontend. Choose `index.inline.html` for a single-file Python server or `index.html` plus `static/` for static-file serving. Treat existing generated systems as immutable unless the user explicitly asks to migrate them.
 
 ## Project Structure To Generate
 
@@ -81,9 +82,14 @@ Write `shared/codex_task.md` with:
 - Preserve citations and metadata through the pipeline.
 - Keep Qwen/OpenAI-compatible API optional and make external provider use explicit.
 - Do not require network downloads for the baseline.
+- Reuse `examples/rag_workbench_ui_template/` for every newly generated Web UI unless the user requests another design.
+- Preserve backend retrieval and generation behavior while adapting the template to `/api/profile`, `/api/query`, and `/api/rebuild`.
+- Do not rewrite `generated-rag-system/` merely because the reusable template exists.
 
 ## Deterministic Script
 
 ```bash
 python skill3-rag-codex-builder/scripts/generate_codex_task.py
 ```
+
+

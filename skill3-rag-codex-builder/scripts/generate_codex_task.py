@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 from __future__ import annotations
 
 from pathlib import Path
@@ -72,6 +72,17 @@ The system must implement the loop:
 - Top-k: {top_k}
 - Candidate-k before rerank: {candidate_k}
 - Interface: {interface}
+
+## Frontend Template Requirement
+
+Use `examples/rag_workbench_ui_template/` as the default frontend for a Web interface.
+
+- Use `index.inline.html` when the backend embeds HTML in a Python string.
+- Use `index.html` with `static/rag-workbench.css` and `static/rag-workbench.js` when static files are supported.
+- Connect the UI to `GET /api/profile`, `POST /api/query`, and `POST /api/rebuild`.
+- Preserve evidence cards, citation controls, trace chips, pipeline timeline, and evaluation snapshot.
+- Do not generate a plain HTML UI while the reusable template is available.
+- Do not modify an existing `generated-rag-system/` unless the user explicitly requests migration.
 
 ## Project Structure
 

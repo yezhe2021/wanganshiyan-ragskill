@@ -1,4 +1,4 @@
-# RAG System Designer
+﻿# RAG System Designer
 
 `rag-system-designer` is a multi-skill workflow for turning vague RAG needs into a runnable, UI-ready, and evaluable RAG system.
 
@@ -14,7 +14,9 @@ It combines two design directions:
 3. `skill2-rag-prompt-generator`: convert requirement/config into `shared/prompt_pack.md`.
 4. `skill3-rag-codex-builder`: produce `shared/codex_task.md` and implementation guidance.
 5. `skill4-rag-auto-evaluator`: produce `shared/evaluation_plan.md` and `shared/evaluation_report.md`.
-6. `skill5-rag-ui-designer`: produce `shared/ui_design.md` and UI workbench requirements.
+6. `skill5-rag-ui-designer`: produce `shared/ui_design.md` and UI workbench requirements, defaulting to `examples/rag_workbench_ui_template/`.
+
+New Web RAG systems use `examples/rag_workbench_ui_template/` by default. Static backends use `index.html` plus `static/`; single-file Python backends use `index.inline.html`. Existing generated systems are not migrated automatically.
 
 The `shared/` directory is the contract between skills. Each stage reads previous artifacts and writes the next artifact, so the project forms a closed loop:
 
@@ -46,3 +48,4 @@ http://127.0.0.1:7870
 ```
 
 The UI supports BM25, Vector, Hybrid, Rerank, Top-K/Candidate-K controls, DashScope model selection, evidence display, trace chips, citation-aware answers, and index rebuild.
+

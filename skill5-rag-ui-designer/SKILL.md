@@ -1,4 +1,4 @@
----
+﻿---
 name: skill5-rag-ui-designer
 description: Design and generate UI requirements for runnable RAG systems, especially paper QA and knowledge-base QA workbenches. Use when a RAG project needs a polished Web UI with corpus profiling, retrieval method selection, model selection, parameter controls, evidence display, citation-aware answers, trace/debug panels, index rebuild controls, and evaluation visibility.
 ---
@@ -12,12 +12,25 @@ Use this skill to turn the RAG workflow into an inspectable, demo-ready Web UI.
 - `shared/rag_config.yaml`
 - `shared/document_analysis.md` or `shared/document_analysis.json`
 - `shared/prompt_pack.md`
-- Optional existing UI implementation, such as `generated-rag-system/server.py`
+- Default reusable frontend: `examples/rag_workbench_ui_template/`
+- Optional existing UI implementation. Preserve it unless the user explicitly requests migration.
 
 ## Output
 
 - `shared/ui_design.md`
 - Optional frontend implementation tasks appended to `shared/codex_task.md`
+
+## Default Template
+
+Use `examples/rag_workbench_ui_template/` by default unless the user explicitly requests another visual system.
+
+- Use `index.html` with `static/rag-workbench.css` and `static/rag-workbench.js` when the generated backend serves static files.
+- Use `index.inline.html` when the generated backend embeds one HTML string.
+- Connect the template to `GET /api/profile`, `POST /api/query`, and `POST /api/rebuild`.
+- Preserve the template's three-column workbench, evidence cards, citation controls, trace timeline, and evaluation snapshot.
+- Adapt labels, defaults, methods, models, and corpus metadata from `shared/rag_config.yaml` and `shared/document_analysis.*`.
+- Do not generate a plain fallback page when this template is available.
+- Do not modify an already generated RAG system unless the user explicitly asks to apply the template to it.
 
 ## Required UI Zones
 
@@ -54,3 +67,4 @@ python skill5-rag-ui-designer/scripts/generate_ui_spec.py
 ```
 
 The script reads shared artifacts and writes `shared/ui_design.md`.
+

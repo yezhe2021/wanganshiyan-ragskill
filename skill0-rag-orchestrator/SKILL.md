@@ -1,4 +1,4 @@
----
+﻿---
 name: skill0-rag-orchestrator
 description: Coordinate a multi-stage RAG system design workflow from vague requirements or uploaded documents to requirement spec, prompt pack, Codex build task, polished UI workbench, runnable system, and evaluation report. Use when the user asks to build, redesign, continue, improve UI, or evaluate a RAG workflow and the current stage must be identified.
 ---
@@ -47,8 +47,9 @@ Do not skip a stage if its required input artifact is missing or still marked as
 When a project already contains runnable RAG scripts or UI code, reuse them as implementation assets. Prefer:
 
 - `skill3-rag-codex-builder/assets/rag-project-template/scripts/` for baseline RAG scripts.
-- `generated-rag-system/server.py` for the integrated UI workbench pattern.
+- `examples/rag_workbench_ui_template/` as the default frontend for newly generated Web RAG systems.
 - `skill5-rag-ui-designer/references/rag_ui_patterns.md` for UI rules.
+- Existing `generated-rag-system/` implementations only as references; do not modify them unless explicitly requested.
 
 ## Output
 
