@@ -1,0 +1,22 @@
+# Uploaded/local knowledge-base files
+document/
+
+# Generated indexes and runtime artifacts
+generated-rag-system/build/
+**/__pycache__/
+*.py[cod]
+*.log
+
+# Local environments and secrets
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+
+# Editor and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+

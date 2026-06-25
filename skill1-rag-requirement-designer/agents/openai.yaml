@@ -1,0 +1,3 @@
+display_name: RAG Requirement Designer
+short_description: Clarifies a RAG idea into a structured requirement spec and YAML config.
+default_prompt: Clarify this RAG need and produce rag_requirement.md plus rag_config.yaml.

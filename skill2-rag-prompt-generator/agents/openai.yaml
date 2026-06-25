@@ -1,0 +1,3 @@
+display_name: RAG Prompt Generator
+short_description: Converts RAG requirements into a modular prompt pack.
+default_prompt: Generate a complete RAG prompt pack from the requirement and config artifacts.

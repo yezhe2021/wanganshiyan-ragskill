@@ -1,0 +1,3 @@
+display_name: RAG Auto Evaluator
+short_description: Builds evaluation plans and reports for retrieval, generation, faithfulness, and performance.
+default_prompt: Evaluate this RAG system and write an actionable evaluation report.

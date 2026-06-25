@@ -1,0 +1,54 @@
+{
+  "document_dir": "document",
+  "file_count": 3,
+  "extension_counts": {
+    "json": 2,
+    "md": 1
+  },
+  "total_bytes": 907390055,
+  "pdf_pages": 0,
+  "language": "zh",
+  "scenario": "general_knowledge_base",
+  "scale": "small",
+  "approx_tokens": 2447,
+  "estimated_chunks": 5,
+  "recommended": {
+    "document_types": [
+      "json",
+      "md"
+    ],
+    "granularity": "chunk",
+    "retrieval_strategy": "bm25",
+    "chunk_size": 700,
+    "overlap": 120,
+    "top_k": 5,
+    "candidate_k": 20,
+    "use_reranker": true,
+    "embedding": "hashing-tfidf baseline; optional multilingual embedding",
+    "reranker": "lightweight coverage reranker",
+    "splitter": "heading/paragraph-aware splitter",
+    "citation": "cite paper title, page, section, and chunk_id",
+    "refusal_policy": "strict"
+  },
+  "files": [
+    {
+      "name": "dataset_infos.json",
+      "extension": "json",
+      "bytes": 188,
+      "pages": null
+    },
+    {
+      "name": "README.md",
+      "extension": "md",
+      "bytes": 9182,
+      "pages": null
+    },
+    {
+      "name": "SoulChatCorpus-sft-multi-Turn.json",
+      "extension": "json",
+      "bytes": 907380685,
+      "pages": null
+    }
+  ],
+  "read_errors": []
+}

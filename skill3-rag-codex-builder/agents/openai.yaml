@@ -1,0 +1,3 @@
+display_name: RAG Codex Builder
+short_description: Produces a Codex implementation task and runnable local RAG project scaffold.
+default_prompt: Turn the RAG requirement and prompt pack into a runnable Codex build task.

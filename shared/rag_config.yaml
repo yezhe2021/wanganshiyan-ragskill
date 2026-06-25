@@ -1,0 +1,58 @@
+project:
+  name: rag-system-designer
+  stage: requirement_ready
+scenario:
+  type: general_knowledge_base
+  language: zh
+data:
+  document_dir: "document"
+  document_types:
+    - json
+    - md
+  estimated_scale: small
+  estimated_tokens: 2447
+  estimated_chunks: 5
+  granularity: chunk
+retrieval:
+  strategy: bm25
+  chunk_size: 700
+  overlap: 120
+  top_k: 5
+  candidate_k: 20
+  use_reranker: true
+  embedding: "hashing-tfidf baseline; optional multilingual embedding"
+  reranker: "lightweight coverage reranker"
+generation:
+  answer_mode: grounded
+  require_citation: true
+  citation_policy: "cite paper title, page, section, and chunk_id"
+  refusal_policy: strict
+engineering:
+  deployment: local
+  runtime: python
+  interface: cli
+  llm: qwen-compatible
+  splitter: "heading/paragraph-aware splitter"
+evaluation:
+  retrieval_metrics:
+    - recall@k
+    - mrr
+    - ndcg
+    - hit_rate
+  generation_metrics:
+    - exact_match
+    - f1
+    - rouge_l
+    - bleu
+    - bertscore
+    - llm_as_judge
+  faithfulness_metrics:
+    - faithfulness
+    - groundedness
+    - citation_accuracy
+    - hallucination_rate
+  performance_metrics:
+    - latency
+    - token_cost
+    - throughput
+    - failure_rate

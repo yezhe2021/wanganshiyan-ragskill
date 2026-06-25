@@ -1,0 +1,3 @@
+display_name: RAG Orchestrator
+short_description: Routes a RAG project through requirement, prompt, build, and evaluation stages.
+default_prompt: Orchestrate this RAG project from the current user state to the next required artifact.
